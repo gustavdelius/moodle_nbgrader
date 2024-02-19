@@ -35,22 +35,22 @@ def moodle_gradesheet(notebook_name, assign_name, csvfile, zip):
             
         for line in reader:        
             
-            ident, fullname,email, status,  grade, max_grade = (line['Identifier'], line['Full name'], line["Email address"], 
+            ident, fullname,status,  grade, max_grade = (line['Identifier'], line['Full name'], 
                                                                 line['Status'], line['Grade'], line['Maximum Grade'])
 
             should_be_submission =  "Submitted" in status
 
             # make sure we have this student in our records
-            unique_id = email[0:7]
+            unique_id = fullname
             try:
                 result = gradebook.find_student(unique_id)
             except nbgrader.api.MissingEntry:
                 print("Creating gradebook entry for ", unique_id)
-                gradebook.update_or_create_student(unique_id, first_name=fullname, last_name="", email=email)
+                gradebook.update_or_create_student(unique_id, first_name=fullname, last_name="", email="")
 
                 
             # map assignment numbers to matric numbers
-            matric = email[0:7]
+            matric = fullname
             match = re.match('Participant ([0-9]+)', ident)
             if not match:
                 print(f"Could not find identity for participant {ident}")

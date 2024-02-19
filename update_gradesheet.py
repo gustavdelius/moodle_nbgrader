@@ -23,8 +23,8 @@ def moodle_gradesheet(assignment, with_feedback=True):
             writer = csv.DictWriter(out, reader.fieldnames)
             writer.writeheader()
             for line in reader:        
-                email, ident, fullname, status, grade, max_grade = line["Email address"], line['Identifier'], line['Full name'], line['Status'], line['Grade'], line['Maximum Grade']                        
-                unique_id = email[0:7]
+                ident, fullname, status, grade, max_grade = line['Identifier'], line['Full name'], line['Status'], line['Grade'], line['Maximum Grade']                        
+                unique_id = fullname
                 try:
                     submission = gradebook.find_submission(assignment, unique_id)                
                 except:
